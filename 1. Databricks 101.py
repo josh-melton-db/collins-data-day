@@ -100,18 +100,4 @@ final_df.write.mode('overwrite').saveAsTable('josh_melton.databricks_101')
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC create view superhost as (
-# MAGIC   select host_is_superhost
-# MAGIC   from josh_melton.databricks_101
-# MAGIC )
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC select * 
-# MAGIC from superhost
-
-# COMMAND ----------
-
 
