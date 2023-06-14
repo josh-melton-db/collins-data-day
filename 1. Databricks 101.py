@@ -19,26 +19,6 @@
 
 # MAGIC %md
 # MAGIC ## Reading data
-# MAGIC You can run a %fs ls command to list out the contents of a directory
-
-# COMMAND ----------
-
-# MAGIC %fs ls
-
-# COMMAND ----------
-
-# MAGIC %fs ls /databricks-datasets/Rdatasets/data-001/datasets.csv
-
-# COMMAND ----------
-
-dataPath = "/databricks-datasets/Rdatasets/data-001/csv/ggplot2/diamonds.csv"
-diamonds = (
-  spark.read.format("csv") 
-  .option("header","true")
-  .option("inferSchema", "true")
-  .load(dataPath)
-)
-diamonds.display()
 
 # COMMAND ----------
 
