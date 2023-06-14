@@ -75,8 +75,8 @@ course_config = CourseConfig(course_code = "mlp",
                              install_min_time = "1 min",
                              install_max_time = "5 min",
                              remote_files = remote_files,
-                             supported_dbrs = ["13.1.x-cpu-ml-scala2.12"],
-                             expected_dbrs = "13.1.x-cpu-ml-scala2.12")
+                             supported_dbrs = ["12.2.x-cpu-ml-scala2.12"],
+                             expected_dbrs = "12.2.x-cpu-ml-scala2.12")
 
 # For this course, these values will be true 99% of the time.
 lesson_config = LessonConfig(name = None,
