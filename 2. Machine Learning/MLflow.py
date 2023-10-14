@@ -89,12 +89,21 @@
 
 # COMMAND ----------
 
+df = pd.read_parquet(f"{DA.paths.datasets_path}/airbnb/sf-listings/airbnb-cleaned-mlflow.parquet")
+
+# COMMAND ----------
+
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
 df = pd.read_parquet(f"{DA.paths.datasets_path}/airbnb/sf-listings/airbnb-cleaned-mlflow.parquet")
 X_train, X_test, y_train, y_test = train_test_split(df.drop(["price"], axis=1), df["price"], random_state=42)
 X_train.head()
+
+# COMMAND ----------
+
+spark_df = spark.createDataFrame(df)
+spark_df.write.mode('overwrite').saveAsTable('josh_melton.airbnb')
 
 # COMMAND ----------
 
@@ -141,7 +150,17 @@ with mlflow.start_run(run_name="Basic RF Run") as run:
     # Log metrics
     mse = mean_squared_error(y_test, predictions)
     mlflow.log_metric("mse", mse)
-
+    model_uri=f"runs:/{run.info.run_id}/{model_name}"
+    summary_data = mlflow.data.load_delta(table_name="josh_melton.airbnb")
+    mlflow.log_input(summary_data, context="training")
+    result = mlflow.evaluate(
+        model_uri,
+        data=spark_df,
+        model_type="regressor",
+        targets='price',
+        evaluators="default",
+        evaluator_config={"explainability_nsamples": 1000},
+    )
     run_id = run.info.run_id
     experiment_id = run.info.experiment_id
 
